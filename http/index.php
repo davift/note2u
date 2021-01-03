@@ -12,3 +12,12 @@
       </noframes>
    </frameset>
 </html>
+<?php
+     $unique = file_get_contents("../unique", true);
+     if ($unique == null)
+        $unique = 0;
+     $unique++;
+     $handle = fopen("../unique", "w+");
+     fwrite($handle, $unique);
+     fclose($handle);
+?>
