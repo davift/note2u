@@ -141,11 +141,9 @@ a:hover {
     <td align="right" valign="top" width="50%">
       <div class="form-style-3">
       <form action="open.php" method="post" target="main">
-      <fieldset><legend>OPEN</legend>
       <label for="field1"><span>Note ID: &nbsp;<span class="required"></span></span><input type="text" class="input-field" name="noteid" value="" /> &nbsp;&nbsp;</label>
       <label for="field2"><span>Password: &nbsp;<span class="required"></span></span><input type="text" class="input-field" name="password" value="" /> &nbsp;&nbsp;</label>
       <label><span> </span><input type="submit" name="submit" value="OPEN" /> &nbsp;&nbsp;</label>
-      </fieldset>
       </form>
       </div>
     </td>
@@ -153,11 +151,9 @@ a:hover {
     <td align="right" valign="top" width="50%">
       <div class="form-style-3">
       <form action="new.php" method="post" target="main">
-      <fieldset><legend>NEW</legend>
       <label for="field1"><span>Note ID: &nbsp;<span class="required"></span></span><input type="text" class="input-field" name="noteid" value="- automatic -" disabled /> &nbsp;&nbsp;</label>
       <label for="field2"><span>Password: &nbsp;<span class="required"></span></span><input type="text" class="input-field" name="password" value="<?php echo date('mdHis'); ?>" /> &nbsp;&nbsp;</label>
       <label><span> </span><input type="submit" name="submit" value="NEW" /> &nbsp;&nbsp;</label>
-      </fieldset>
       </form>
       </div>
     </td>
