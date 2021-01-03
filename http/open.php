@@ -168,7 +168,7 @@ echo '<tr><td align="left" valign="top">'."\n";
 if (md5($password) == $pass){
 
   $handle = fopen("../data/$noteid/counts", "w+");
-  fwrite($handle, '');
+  fwrite($handle, '0');
   fclose($handle);
 
   if (htmlentities(strip_tags($_POST['submit']), ENT_QUOTES) == 'APPEND'){
@@ -237,10 +237,12 @@ if (md5($password) == $pass){
 
   exit;
 }
-
+echo "Note ID: $noteid<br>";
+echo "Password: $password<br>";
+echo "Usage: ".(filesize("../data/$noteid/note")/1000).' %<br>';
+echo 'Sequential Fails: '.file_get_contents("../data/$noteid/counts", true).'<br>';
+echo 'Total Fails: '.file_get_contents("../data/$noteid/countt", true).'<br><br>';
 echo '<center><br>';
-echo "Note ID: $noteid<br><br>";
-echo "Password: $password<br><br>";
 echo '<b>[copy these information,<br>it is impossible to recover]</b><br><br>';
 echo '<div class="form-style-3">';
 echo '<form action="open.php" method="post">';
