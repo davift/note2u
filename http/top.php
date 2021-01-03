@@ -136,7 +136,7 @@ a:hover {
 
 <table border="0" bordercolor="#ffffff" width="100%" height="100%">
   <tr>
-    <td align="left" valign="top"><img src="logo.png"></td>
+    <td align="left" valign="top"><img src="logo.png" width="370" height="110"></td>
 
     <td align="right" valign="top" width="50%">
       <div class="form-style-3">
