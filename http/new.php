@@ -23,6 +23,8 @@ file_put_contents("../data/$noteid/pass", md5($password));
       unset($token, $cipher_method, $enc_key, $enc_iv);
 
       file_put_contents("../data/$noteid/note", $cryptedtoken."\n", FILE_APPEND | LOCK_EX);
+      file_put_contents("../data/$noteid/counts", "0", FILE_APPEND | LOCK_EX);
+      file_put_contents("../data/$noteid/countt", "0", FILE_APPEND | LOCK_EX);
 
 include('open.php');
 ?>
