@@ -29,6 +29,6 @@ THIS CODE IS FREE TO ANYONE TO USE AND MODIFY.
 
 It is running the Tor Network by the address:
 
-   http://4l67wy7uuntt6i4tlmdznqjyqq7rwxrtwddcatkvfc6ivclfxtbndeyd.onion/
+   http://b2eutjphbe66vhh34enrsxryeid2gpp5o5f7djov54rmsdj4rl3vasad.onion
 
 SEE THE SCREENSHOTS DIRECTORY TO VISUALIZE HOW THIS WEB SITE LOOKS LIKE AND HOW IT WORKS.
