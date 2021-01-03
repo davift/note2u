@@ -21,7 +21,8 @@
     This is how it works:<br><br>
     The reference number of the Notes are randomly generated;<br><br>
     The password is not stored, only a hash of it;<br><br>
-    The Note can be accessed freely by anyone with the password but after 10 failed consecutive or 50 accumulated attempts the Note is automatically erased.<br><br>
+    The content of the note is encrypted using SSL techniques;<br><br>
+    The Note can be accessed freely by anyone with the password but after 10 failed consecutive or 50 accumulated attempts the Note is automatically erased;<br><br>
     The maximum size of the content is 50kb, which is 100 times all the text of this page.<br><br>
     <br><b>WELCOME</b></p>
     </td>
