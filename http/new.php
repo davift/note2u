@@ -27,4 +27,12 @@ file_put_contents("../data/$noteid/pass", md5($password));
       file_put_contents("../data/$noteid/countt", "0", FILE_APPEND | LOCK_EX);
 
 include('open.php');
+
+$new = file_get_contents("../new", true);
+if ($new == null)
+   $new = 0;
+$new++;
+$handle = fopen("../new", "w+");
+fwrite($handle, $new);
+fclose($handle);
 ?>
