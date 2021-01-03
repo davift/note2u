@@ -173,7 +173,7 @@ if (md5($password) == $pass){
 
       $token = $datetime."\t".$name."\t".$message;
       $cipher_method = 'aes-128-ctr';
-      $enc_key = openssl_digest(md5($password), 'SHA256', TRUE);
+      $enc_key = openssl_digest(sha1($password), 'SHA256', TRUE);
       $enc_iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length($cipher_method));
       $cryptedtoken = openssl_encrypt($token, $cipher_method, $enc_key, 0, $enc_iv) . "::" . bin2hex($enc_iv);
       unset($token, $cipher_method, $enc_key, $enc_iv);
@@ -194,7 +194,7 @@ if (md5($password) == $pass){
 
       list($crypted_token, $enc_iv) = explode("::", $cryptedmessage);;
       $cipher_method = 'aes-128-ctr';
-      $enc_key = openssl_digest(md5($password), 'SHA256', TRUE);
+      $enc_key = openssl_digest(sha1($password), 'SHA256', TRUE);
       $line = openssl_decrypt($crypted_token, $cipher_method, $enc_key, 0, hex2bin($enc_iv));
       unset($crypted_token, $cipher_method, $enc_key, $enc_iv);
 
