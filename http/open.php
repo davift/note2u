@@ -272,3 +272,12 @@ echo "<input type='hidden' name='password' value='$password'>";
 
 </center>
 </body></html>
+<?php
+$open = file_get_contents("../open", true);
+if ($open == null)
+   $open = 0;
+$open++;
+$handle = fopen("../open", "w+");
+fwrite($handle, $open);
+fclose($handle);
+?>
