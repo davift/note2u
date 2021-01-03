@@ -166,6 +166,11 @@ $pass = str_replace(array("\r\n", "\n", "\r"), '', file_get_contents("../data/$n
 echo '<tr><td align="left" valign="top">'."\n";
 
 if (md5($password) == $pass){
+
+  $handle = fopen("../data/$noteid/counts", "w+");
+  fwrite($handle, '');
+  fclose($handle);
+
   if (htmlentities(strip_tags($_POST['submit']), ENT_QUOTES) == 'APPEND'){
     $datetime = date('Y/m/d H:i:s').' (UTC)';
     $name = htmlentities(strip_tags($_POST['name']), ENT_QUOTES);
@@ -206,6 +211,30 @@ if (md5($password) == $pass){
 
 } else {
   echo "<center><br> <br>WRONG PASSWORD OR NOTE ID INEXISTENT!<br> <br> &nbsp;</center>";
+
+  if($pass != ''){
+     $totalcount = file_get_contents("../data/$noteid/countt", true);
+     if ($totalcount == null)
+        $totalcount = 0;
+     $totalcount++;
+     $handle = fopen("../data/$noteid/countt", "w+");
+     fwrite($handle, $totalcount);
+     fclose($handle);
+
+     $sequentialcount = file_get_contents("../data/$noteid/counts", true);
+     if ($sequentialcount == null)
+        $sequentialcount = 0;
+     $sequentialcount++;
+     $handle = fopen("../data/$noteid/counts", "w+");
+     fwrite($handle, $sequentialcount);
+     fclose($handle);
+
+     if($totalcount >= 50 || $sequentialcount >= 10){
+       array_map('unlink', glob("../data/$noteid/*"));
+       rmdir("../data/$noteid");
+     }
+  }
+
   exit;
 }
 
