@@ -16,4 +16,7 @@ echo "Usage: $bytestotal MB<br>";
 echo 'Unique: '.file_get_contents("../unique", true).'<br>';
 echo 'New: '.file_get_contents("../new", true).'<br>';
 echo 'Open: '.file_get_contents("../open", true).'<br>';
+echo 'Append: '.file_get_contents("../append", true).'<br>';
+echo 'Wipe: '.file_get_contents("../wipe", true).'<br>';
+echo 'Destroy: '.file_get_contents("../destroy", true).'<br>';
 ?>
