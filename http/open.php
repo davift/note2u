@@ -184,13 +184,39 @@ if (md5($password) == $pass){
       unset($token, $cipher_method, $enc_key, $enc_iv);
 
     file_put_contents("../data/$noteid/note", $cryptedtoken."\n", FILE_APPEND | LOCK_EX);
+
+    $append = file_get_contents("../append", true);
+    if ($append == null)
+       $append = 0;
+    $append++;
+    $handle = fopen("../append", "w+");
+    fwrite($handle, $append);
+    fclose($handle);
+
   } elseif (htmlentities(strip_tags($_POST['submit']), ENT_QUOTES) == 'DESTROY'){
     array_map('unlink', glob("../data/$noteid/*"));
     rmdir("../data/$noteid");
     echo '<center><br> <br>NOTE DESTROYED!<br> <br> &nbsp;</center>';
+
+    $destroy = file_get_contents("../destroy", true);
+    if ($destroy == null)
+       $destroy = 0;
+    $destroy++;
+    $handle = fopen("../destroy", "w+");
+    fwrite($handle, $destroy);
+    fclose($handle);
+
     exit;
   } elseif (htmlentities(strip_tags($_POST['submit']), ENT_QUOTES) == 'WIPE'){
     file_put_contents("../data/$noteid/note", "");
+
+    $wipe = file_get_contents("../wipe", true);
+    if ($wipe == null)
+       $wipe = 0;
+    $wipe++;
+    $handle = fopen("../wipe", "w+");
+    fwrite($handle, $wipe);
+    fclose($handle);
   }
 
   $file = fopen("../data/$noteid/note","r");
@@ -237,12 +263,14 @@ if (md5($password) == $pass){
 
   exit;
 }
+
+echo '<center><br>';
 echo "Note ID: $noteid<br>";
 echo "Password: $password<br>";
-echo "Usage: ".(filesize("../data/$noteid/note")/1000).' %<br>';
+$notesize = filesize("../data/$noteid/note");
+echo "Usage: ".($notesize/1000).' %<br>';
 echo 'Sequential Fails: '.file_get_contents("../data/$noteid/counts", true).'<br>';
 echo 'Total Fails: '.file_get_contents("../data/$noteid/countt", true).'<br><br>';
-echo '<center><br>';
 echo '<b>[copy these information,<br>it is impossible to recover]</b><br><br>';
 echo '<div class="form-style-3">';
 echo '<form action="open.php" method="post">';
@@ -254,24 +282,38 @@ echo '</form></div></center>';
 ?>
 
 </td><td align="right" valign="middle" colspan="2">
-<center><div class="form-style-3">
-<form action="open.php" method="post">
+<center>
 
 <?php
-echo "<input type='hidden' name='noteid' value='$noteid'>";
-echo "<input type='hidden' name='password' value='$password'>";
+if($notesize <= 1000){
+  echo '<div class="form-style-3">';
+  echo '<form action="open.php" method="post">';
+  echo "<input type='hidden' name='noteid' value='$noteid'>";
+  echo "<input type='hidden' name='password' value='$password'>";
+  echo '<label for="field1"><span>Name: &nbsp;<span class="required"></span></span><input type="text" class="input-field" name="name" value="" /> &nbsp;&nbsp;</label>';
+  echo '<label for="field2"><span>Message: &nbsp;<span class="required"></span></span><textarea type="textarea" class="input-field" name="message"></textarea> &nbsp;&nbsp;</label>';
+  echo '<label><span> </span><input type="submit" name="submit" value="APPEND" /> &nbsp;&nbsp;</label>';
+  echo '</form></div>';
+} else {
+  echo 'The max capacity has been exceeded. Please WIPE it or start a new Note.';
+
+  $capacity = file_get_contents("../capacity", true);
+  if ($capacity == null)
+     $capacity = 0;
+  $capacity++;
+  $handle = fopen("../capacity", "w+");
+  fwrite($handle, $capacity);
+  fclose($handle);
+}
 ?>
 
-<label for="field1"><span>Name: &nbsp;<span class="required"></span></span><input type="text" class="input-field" name="name" value="" /> &nbsp;&nbsp;</label>
-<label for="field2"><span>Message: &nbsp;<span class="required"></span></span><textarea type="textarea" class="input-field" name="message"></textarea> &nbsp;&nbsp;</label>
-<label><span> </span><input type="submit" name="submit" value="APPEND" /> &nbsp;&nbsp;</label>
-</form></div></center>
-
+</center>
 </td></tr>
 </table>
 
 </center>
 </body></html>
+
 <?php
 $open = file_get_contents("../open", true);
 if ($open == null)
