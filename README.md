@@ -10,6 +10,8 @@ This is how it works:
    - The reference number of the Notes are randomly generated;
 
    - The password is not stored, only a hash of it;
+   
+   - The content of the note is encrypted using SSL techniques;
 
    - The Note can be accessed freely by anyone with the password but after 10 failed consecutive or 50 accumulated attempts the Note is automatically erased.
 
