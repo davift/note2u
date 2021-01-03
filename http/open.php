@@ -157,19 +157,28 @@ a:hover {
 <center>
 
 <table>
-<tr><td align="left" valign="top">
 
 <?php
 $noteid = (int) htmlentities(strip_tags($_POST['noteid']), ENT_QUOTES);
 $password = htmlentities(strip_tags($_POST['password']), ENT_QUOTES);
 $pass = str_replace(array("\r\n", "\n", "\r"), '', file_get_contents("../data/$noteid/pass", true));
 
+echo '<tr><td align="left" valign="top">'."\n";
+
 if (md5($password) == $pass){
   if (htmlentities(strip_tags($_POST['submit']), ENT_QUOTES) == 'APPEND'){
     $datetime = date('Y/m/d H:i:s').' (UTC)';
     $name = htmlentities(strip_tags($_POST['name']), ENT_QUOTES);
     $message = str_replace(array("\r\n", "\n", "\r"), '<br>', htmlentities(strip_tags($_POST['message']), ENT_QUOTES));
-    file_put_contents("../data/$noteid/note", "$datetime\t$name\t$message\n", FILE_APPEND | LOCK_EX);
+
+      $token = $datetime."\t".$name."\t".$message;
+      $cipher_method = 'aes-128-ctr';
+      $enc_key = openssl_digest(md5($password), 'SHA256', TRUE);
+      $enc_iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length($cipher_method));
+      $cryptedtoken = openssl_encrypt($token, $cipher_method, $enc_key, 0, $enc_iv) . "::" . bin2hex($enc_iv);
+      unset($token, $cipher_method, $enc_key, $enc_iv);
+
+    file_put_contents("../data/$noteid/note", $cryptedtoken."\n", FILE_APPEND | LOCK_EX);
   } elseif (htmlentities(strip_tags($_POST['submit']), ENT_QUOTES) == 'DESTROY'){
     array_map('unlink', glob("../data/$noteid/*"));
     rmdir("../data/$noteid");
@@ -179,9 +188,22 @@ if (md5($password) == $pass){
     file_put_contents("../data/$noteid/note", "");
   }
 
-  $lines = str_replace(array("\r\n", "\n", "\r"), '</td></tr><tr><td align="left" valign="top">', file_get_contents("../data/$noteid/note", true));
-  $lines = str_replace("\t", '</td><td align="left" valign="top">', $lines);
-  echo $lines;
+  $file = fopen("../data/$noteid/note","r");
+  while(! feof($file)){
+      $cryptedmessage = str_replace(array("\r\n", "\n", "\r"), '', fgets($file));
+
+      list($crypted_token, $enc_iv) = explode("::", $cryptedmessage);;
+      $cipher_method = 'aes-128-ctr';
+      $enc_key = openssl_digest(md5($password), 'SHA256', TRUE);
+      $line = openssl_decrypt($crypted_token, $cipher_method, $enc_key, 0, hex2bin($enc_iv));
+      unset($crypted_token, $cipher_method, $enc_key, $enc_iv);
+
+      if($line != ''){
+	echo str_replace("\t", '</td><td align="left" valign="top">', $line).'</td></tr><tr><td align="left" valign="top">'."\n";
+      }
+  }
+  fclose($file);
+
 } else {
   echo "<center><br> <br>WRONG PASSWORD OR NOTE ID INEXISTENT!<br> <br> &nbsp;</center>";
   exit;
